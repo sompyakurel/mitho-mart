@@ -26,6 +26,26 @@
 <li>Green Chilies</li>
 <li>Sel Roti - Weekend Only</li>
 </ul>
+<h2>Request Pickup</h2>
+<p>Sample only - this form does not place a real order, and there is no payment online. You pay in store.</p>
+<form id="pickup-form">
+<label for="pickup-name">Your name</label>
+<input id="pickup-name" type="text" required>
+<label for="pickup-items">Items you want</label>
+<input id="pickup-items" type="text" required>
+<button type="submit">Request Pickup</button>
+</form>
+<p id="pickup-confirmation"></p>
+<script>
+document.getElementById("pickup-form").addEventListener("submit", function(event) {
+event.preventDefault();
+var name = document.getElementById("pickup-name").value;
+var ref = "MM-" + Math.floor(1000 + Math.random() * 9000);
+var confirmation = document.getElementById("pickup-confirmation");
+confirmation.textContent = "Thanks, " + name + "! Your sample pickup request is " + ref + ". The shop would confirm it, and you would pay in store. No real order was placed.";
+confirmation.style.display = "block";
+});
+</script>
 
 </body>
 </html>

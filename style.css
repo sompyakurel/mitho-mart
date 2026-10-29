@@ -41,3 +41,44 @@ li {
   font-weight: 600;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  background: white;
+  border: 1px solid #e5ddd3;
+  border-radius: 12px;
+  padding: 20px;
+  }
+  label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+  }
+  input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  }
+  button {
+  margin-top: 16px;
+  padding: 12px 20px;
+  background: #c2410c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  }
+  #pickup-confirmation {
+  display: none;
+  max-width: 500px;
+  margin: 16px auto;
+  background: #dcfce7;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  }
+  
