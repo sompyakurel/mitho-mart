@@ -81,4 +81,19 @@ form {
   padding: 16px;
   text-align: center;
   }
-  
+  #open-badge {
+    max-width: 320px;
+    margin: 16px auto;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-align: center;
+    color: white;
+    }
+    #open-badge.open {
+    background: #15803d;
+    }
+    #open-badge.closed {
+    background: #6b7280;
+    }
+      

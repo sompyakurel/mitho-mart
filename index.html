@@ -6,6 +6,7 @@
 </head>
 <body>
   <h1>Mitho Mart</h1>
+  <p id="open-badge">Checking hours...</p>
   <p>SAMPLE SITE - Nepali & Indian Grocery</p>
   <p>Phone: (614) 555-0142 - Example only</p>
   <h2>Categories</h2>
@@ -46,6 +47,42 @@ confirmation.textContent = "Thanks, " + name + "! Your sample pickup request is 
 confirmation.style.display = "block";
 });
 </script>
-
+<script>
+  var hours = {
+  0: {open: 540, close: 1200},
+  1: {open: 540, close: 1200},
+  2: {open: 540, close: 1200},
+  3: {open: 540, close: 1200},
+  4: {open: 540, close: 1200},
+  5: {open: 540, close: 1230},
+  6: {open: 540, close: 1200}
+  };
+  function formatTime(minutes) {
+  var h = Math.floor(minutes / 60);
+  var m = minutes % 60;
+  var ampm = h >= 12 ? "PM" : "AM";
+  var h12 = h % 12;
+  if (h12 === 0) { h12 = 12; }
+  if (m === 0) { return h12 + " " + ampm; }
+  return h12 + ":" + (m < 10 ? "0" + m : m) + " " + ampm;
+  }
+  var now = new Date();
+  var day = now.getDay();
+  var currentMinutes = now.getHours() * 60 + now.getMinutes();
+  var today = hours[day];
+  var badge = document.getElementById("open-badge");
+  if (currentMinutes >= today.open && currentMinutes < today.close) {
+  badge.textContent = "Open now - Closes " + formatTime(today.close) + " today";
+  badge.className = "open";
+  } else if (currentMinutes < today.open) {
+  badge.textContent = "Closed - Opens " + formatTime(today.open) + " today";
+  badge.className = "closed";
+  } else {
+  var tomorrow = hours[(day + 1) % 7];
+  badge.textContent = "Closed - Opens " + formatTime(tomorrow.open) + " tomorrow";
+  badge.className = "closed";
+  }
+  </script>
+  
 </body>
 </html>
