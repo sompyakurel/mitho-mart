@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mitho Mart - Nepali & Indian Grocery</title>
-  <link rel="stylesheet" href="style.css">
+<title>Mitho Mart - Nepali & Indian Grocery</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Mitho Mart</h1>
-  <p id="open-badge">Checking hours...</p>
-  <p>SAMPLE SITE - Nepali & Indian Grocery</p>
-  <p>Phone: (614) 555-0142 - Example only</p>
-  <h2>Categories</h2>
-  <ul>
-    <li>Spices</li>
-    <li>Rice & Lentils</li>
-    <li>Fresh Vegetables</li>
-    <li>Frozen Foods</li>
-    <li>Snacks</li>
-    <li>Hot Food</li>
-  </ul>
-  <h2>Fresh This Week</h2>
-<p>Sample items - in a real shop, this list would be updated weekly by the owner.</p>
+<h1 data-en="Mitho Mart" data-ne="मिठो मार्ट">Mitho Mart</h1>
+<p id="open-badge">Checking hours...</p>
+<p data-en="SAMPLE SITE - Nepali & Indian Grocery" data-ne="नमूना साइट - नेपाली र भारतीय किराना">SAMPLE SITE - Nepali & Indian Grocery</p>
+<p>Phone: (614) 555-0142 - Example only</p>
+<button id="lang-toggle">नेपालीमा हेर्नुहोस्</button>
+<h2 data-en="Categories" data-ne="श्रेणीहरू">Categories</h2>
 <ul>
-<li>Fresh Cilantro</li>
-<li>Roma Tomatoes</li>
-<li>Okra</li>
-<li>Green Chilies</li>
-<li>Sel Roti - Weekend Only</li>
+<li data-en="Spices" data-ne="मसला">Spices</li>
+<li data-en="Rice & Lentils" data-ne="चामल र दाल">Rice & Lentils</li>
+<li data-en="Fresh Vegetables" data-ne="ताजा तरकारी">Fresh Vegetables</li>
+<li data-en="Frozen Foods" data-ne="फ्रोजन खाना">Frozen Foods</li>
+<li data-en="Snacks" data-ne="खाजा">Snacks</li>
+<li data-en="Hot Food" data-ne="तातो खाना">Hot Food</li>
 </ul>
-<h2>Request Pickup</h2>
-<p>Sample only - this form does not place a real order, and there is no payment online. You pay in store.</p>
+<h2 data-en="Fresh This Week" data-ne="यो हप्ता ताजा">Fresh This Week</h2>
+<p data-en="Sample items - in a real shop, this list would be updated weekly by the owner." data-ne="नमूना सामानहरू - वास्तविक पसलमा, यो सूची हप्तामा अद्यावधिक गरिन्छ।">Sample items - in a real shop, this list would be updated weekly by the owner.</p>
+<ul>
+<li data-en="Fresh Cilantro" data-ne="ताजा धनियाँ">Fresh Cilantro</li>
+<li data-en="Roma Tomatoes" data-ne="रोमा टमाटर">Roma Tomatoes</li>
+<li data-en="Okra" data-ne="भिन्डी">Okra</li>
+<li data-en="Green Chilies" data-ne="हरियो खुर्सानी">Green Chilies</li>
+<li data-en="Sel Roti - Weekend Only" data-ne="सेल रोटी - हप्ताको अन्त्यमा मात्र">Sel Roti - Weekend Only</li>
+</ul>
+<h2 data-en="Request Pickup" data-ne="पिकअप अनुरोध">Request Pickup</h2>
+<p data-en="Sample only - this form does not place a real order, and there is no payment online. You pay in store." data-ne="नमूना मात्र - यो फारमले वास्तविक अर्डर गर्दैन, र अनलाइन भुक्तानी छैन। तपाईंले पसलमा भुक्तानी गर्नुहुन्छ।">Sample only - this form does not place a real order, and there is no payment online. You pay in store.</p>
 <form id="pickup-form">
-<label for="pickup-name">Your name</label>
+<label for="pickup-name" data-en="Your name" data-ne="तपाईंको नाम">Your name</label>
 <input id="pickup-name" type="text" required>
-<label for="pickup-items">Items you want</label>
+<label for="pickup-items" data-en="Items you want" data-ne="तपाईंलाई चाहिने सामान">Items you want</label>
 <input id="pickup-items" type="text" required>
-<button type="submit">Request Pickup</button>
+<button type="submit" data-en="Request Pickup" data-ne="पिकअप अनुरोध गर्नुहोस्">Request Pickup</button>
 </form>
 <p id="pickup-confirmation"></p>
 <script>
@@ -48,41 +49,50 @@ confirmation.style.display = "block";
 });
 </script>
 <script>
-  var hours = {
-  0: {open: 540, close: 1200},
-  1: {open: 540, close: 1200},
-  2: {open: 540, close: 1200},
-  3: {open: 540, close: 1200},
-  4: {open: 540, close: 1200},
-  5: {open: 540, close: 1230},
-  6: {open: 540, close: 1200}
-  };
-  function formatTime(minutes) {
-  var h = Math.floor(minutes / 60);
-  var m = minutes % 60;
-  var ampm = h >= 12 ? "PM" : "AM";
-  var h12 = h % 12;
-  if (h12 === 0) { h12 = 12; }
-  if (m === 0) { return h12 + " " + ampm; }
-  return h12 + ":" + (m < 10 ? "0" + m : m) + " " + ampm;
-  }
-  var now = new Date();
-  var day = now.getDay();
-  var currentMinutes = now.getHours() * 60 + now.getMinutes();
-  var today = hours[day];
-  var badge = document.getElementById("open-badge");
-  if (currentMinutes >= today.open && currentMinutes < today.close) {
-  badge.textContent = "Open now - Closes " + formatTime(today.close) + " today";
-  badge.className = "open";
-  } else if (currentMinutes < today.open) {
-  badge.textContent = "Closed - Opens " + formatTime(today.open) + " today";
-  badge.className = "closed";
-  } else {
-  var tomorrow = hours[(day + 1) % 7];
-  badge.textContent = "Closed - Opens " + formatTime(tomorrow.open) + " tomorrow";
-  badge.className = "closed";
-  }
-  </script>
-  
+var hours = {
+0: {open: 540, close: 1200},
+1: {open: 540, close: 1200},
+2: {open: 540, close: 1200},
+3: {open: 540, close: 1200},
+4: {open: 540, close: 1200},
+5: {open: 540, close: 1230},
+6: {open: 540, close: 1200}
+};
+function formatTime(minutes) {
+var h = Math.floor(minutes / 60);
+var m = minutes % 60;
+var ampm = h >= 12 ? "PM" : "AM";
+var h12 = h % 12;
+if (h12 === 0) { h12 = 12; }
+if (m === 0) { return h12 + " " + ampm; }
+return h12 + ":" + (m < 10 ? "0" + m : m) + " " + ampm;
+}
+var now = new Date();
+var day = now.getDay();
+var currentMinutes = now.getHours() * 60 + now.getMinutes();
+var today = hours[day];
+var badge = document.getElementById("open-badge");
+if (currentMinutes >= today.open && currentMinutes < today.close) {
+badge.textContent = "Open now - Closes " + formatTime(today.close) + " today";
+badge.className = "open";
+} else if (currentMinutes < today.open) {
+badge.textContent = "Closed - Opens " + formatTime(today.open) + " today";
+badge.className = "closed";
+} else {
+var tomorrow = hours[(day + 1) % 7];
+badge.textContent = "Closed - Opens " + formatTime(tomorrow.open) + " tomorrow";
+badge.className = "closed";
+}
+</script>
+<script>
+var currentLang = "en";
+document.getElementById("lang-toggle").addEventListener("click", function() {
+currentLang = currentLang === "en" ? "ne" : "en";
+document.querySelectorAll("[data-en]").forEach(function(el) {
+el.textContent = currentLang === "ne" ? el.getAttribute("data-ne") : el.getAttribute("data-en");
+});
+this.textContent = currentLang === "ne" ? "View in English" : "नेपालीमा हेर्नुहोस्";
+});
+</script>
 </body>
 </html>
