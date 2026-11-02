@@ -7,27 +7,44 @@
 </head>
 <body>
 <h1 data-en="Mitho Mart" data-ne="मिठो मार्ट">Mitho Mart</h1>
+<img class="hero" src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80" alt="Fresh produce at a grocery store">
 <p id="open-badge">Checking hours...</p>
 <p data-en="SAMPLE SITE - Nepali & Indian Grocery" data-ne="नमूना साइट - नेपाली र भारतीय किराना">SAMPLE SITE - Nepali & Indian Grocery</p>
 <p>Phone: (614) 555-0142 - Example only</p>
 <button id="lang-toggle">नेपालीमा हेर्नुहोस्</button>
 <h2 data-en="Categories" data-ne="श्रेणीहरू">Categories</h2>
+<p data-en="Tap a category to see sample items in it." data-ne="नमूना सामानहरू हेर्न कुनै श्रेणीमा ट्याप गर्नुहोस्।">Tap a category to see sample items in it.</p>
 <ul>
-<li data-en="Spices" data-ne="मसला">Spices</li>
-<li data-en="Rice & Lentils" data-ne="चामल र दाल">Rice & Lentils</li>
-<li data-en="Fresh Vegetables" data-ne="ताजा तरकारी">Fresh Vegetables</li>
-<li data-en="Frozen Foods" data-ne="फ्रोजन खाना">Frozen Foods</li>
-<li data-en="Snacks" data-ne="खाजा">Snacks</li>
-<li data-en="Hot Food" data-ne="तातो खाना">Hot Food</li>
+<li data-category="spices" tabindex="0" data-en="🌶️ Spices" data-ne="🌶️ मसला">🌶️ Spices</li>
+<li data-category="rice" tabindex="0" data-en="🍚 Rice & Lentils" data-ne="🍚 चामल र दाल">🍚 Rice & Lentils</li>
+<li data-category="vegetables" tabindex="0" data-en="🥦 Fresh Vegetables" data-ne="🥦 ताजा तरकारी">🥦 Fresh Vegetables</li>
+<li data-category="frozen" tabindex="0" data-en="🧊 Frozen Foods" data-ne="🧊 फ्रोजन खाना">🧊 Frozen Foods</li>
+<li data-category="snacks" tabindex="0" data-en="🍪 Snacks" data-ne="🍪 खाजा">🍪 Snacks</li>
+<li data-category="hotfood" tabindex="0" data-en="🍛 Hot Food" data-ne="🍛 तातो खाना">🍛 Hot Food</li>
+<li data-category="beverages" tabindex="0" data-en="🥤 Beverages" data-ne="🥤 पेय पदार्थ">🥤 Beverages</li>
+<li data-category="dairy" tabindex="0" data-en="🥛 Dairy & Eggs" data-ne="🥛 दुग्धजन्य र अण्डा">🥛 Dairy & Eggs</li>
+<li data-category="bakery" tabindex="0" data-en="🍞 Bakery & Breads" data-ne="🍞 बेकरी र रोटी">🍞 Bakery & Breads</li>
+<li data-category="pickles" tabindex="0" data-en="🥒 Pickles & Chutneys" data-ne="🥒 अचार र चटनी">🥒 Pickles & Chutneys</li>
+<li data-category="pooja" tabindex="0" data-en="🪔 Pooja Supplies" data-ne="🪔 पूजा सामग्री">🪔 Pooja Supplies</li>
 </ul>
+<div id="category-detail" style="display: none;">
+<h3 id="category-detail-title"></h3>
+<ul id="category-detail-items"></ul>
+<p data-en="Sample items only. Ask for any of these in the pickup form below." data-ne="नमूना सामानहरू मात्र। यी मध्ये कुनै पनि तलको पिकअप फारममा सोध्नुहोस्।">Sample items only. Ask for any of these in the pickup form below.</p>
+</div>
 <h2 data-en="Fresh This Week" data-ne="यो हप्ता ताजा">Fresh This Week</h2>
 <p data-en="Sample items - in a real shop, this list would be updated weekly by the owner." data-ne="नमूना सामानहरू - वास्तविक पसलमा, यो सूची हप्तामा अद्यावधिक गरिन्छ।">Sample items - in a real shop, this list would be updated weekly by the owner.</p>
 <ul>
-<li data-en="Fresh Cilantro" data-ne="ताजा धनियाँ">Fresh Cilantro</li>
-<li data-en="Roma Tomatoes" data-ne="रोमा टमाटर">Roma Tomatoes</li>
-<li data-en="Okra" data-ne="भिन्डी">Okra</li>
-<li data-en="Green Chilies" data-ne="हरियो खुर्सानी">Green Chilies</li>
-<li data-en="Sel Roti - Weekend Only" data-ne="सेल रोटी - हप्ताको अन्त्यमा मात्र">Sel Roti - Weekend Only</li>
+<li data-en="🌿 Fresh Cilantro" data-ne="🌿 ताजा धनियाँ">🌿 Fresh Cilantro</li>
+<li data-en="🍅 Roma Tomatoes" data-ne="🍅 रोमा टमाटर">🍅 Roma Tomatoes</li>
+<li data-en="🥒 Okra" data-ne="🥒 भिन्डी">🥒 Okra</li>
+<li data-en="🌶️ Green Chilies" data-ne="🌶️ हरियो खुर्सानी">🌶️ Green Chilies</li>
+<li data-en="🥞 Sel Roti - Weekend Only" data-ne="🥞 सेल रोटी - हप्ताको अन्त्यमा मात्र">🥞 Sel Roti - Weekend Only</li>
+<li data-en="🫚 Fresh Ginger" data-ne="🫚 ताजा अदुवा">🫚 Fresh Ginger</li>
+<li data-en="🥦 Cauliflower" data-ne="🥦 काउली">🥦 Cauliflower</li>
+<li data-en="🫘 Green Beans" data-ne="🫘 हरियो सिमी">🫘 Green Beans</li>
+<li data-en="🥭 Mangoes - Seasonal" data-ne="🥭 आँप - मौसमी">🥭 Mangoes - Seasonal</li>
+<li data-en="🧀 Fresh Paneer" data-ne="🧀 ताजा पनिर">🧀 Fresh Paneer</li>
 </ul>
 <h2 data-en="Request Pickup" data-ne="पिकअप अनुरोध">Request Pickup</h2>
 <p data-en="Sample only - this form does not place a real order, and there is no payment online. You pay in store." data-ne="नमूना मात्र - यो फारमले वास्तविक अर्डर गर्दैन, र अनलाइन भुक्तानी छैन। तपाईंले पसलमा भुक्तानी गर्नुहुन्छ।">Sample only - this form does not place a real order, and there is no payment online. You pay in store.</p>
@@ -39,6 +56,28 @@
 <button type="submit" data-en="Request Pickup" data-ne="पिकअप अनुरोध गर्नुहोस्">Request Pickup</button>
 </form>
 <p id="pickup-confirmation"></p>
+<div class="info-row">
+<div class="info-col">
+<h2 data-en="Store Hours" data-ne="पसलको समय">Store Hours</h2>
+<p data-en="Sample hours - the open badge above uses these same hours." data-ne="नमूना समय - माथिको खुला ब्याजले यिनै समयहरू प्रयोग गर्दछ।">Sample hours - the open badge above uses these same hours.</p>
+<table>
+<tr><th data-en="Day" data-ne="दिन">Day</th><th data-en="Hours" data-ne="समय">Hours</th></tr>
+<tr><td data-en="Sunday" data-ne="आइतबार">Sunday</td><td>9 AM - 8 PM</td></tr>
+<tr><td data-en="Monday" data-ne="सोमबार">Monday</td><td>9 AM - 8 PM</td></tr>
+<tr><td data-en="Tuesday" data-ne="मंगलबार">Tuesday</td><td>9 AM - 8 PM</td></tr>
+<tr><td data-en="Wednesday" data-ne="बुधबार">Wednesday</td><td>9 AM - 8 PM</td></tr>
+<tr><td data-en="Thursday" data-ne="बिहीबार">Thursday</td><td>9 AM - 8 PM</td></tr>
+<tr><td data-en="Friday" data-ne="शुक्रबार">Friday</td><td>9 AM - 8 PM</td></tr>
+<tr><td data-en="Saturday" data-ne="शनिबार">Saturday</td><td>9 AM - 8:30 PM</td></tr>
+</table>
+</div>
+<div class="info-col">
+<h2 data-en="Visit Us" data-ne="हामीलाई भेट्नुहोस्">Visit Us</h2>
+<p data-en="123 Sample Street, Columbus, OH 43232 - Example address only, not a real shop." data-ne="१२३ नमूना सडक, कोलम्बस, ओहायो ४३२३२ - उदाहरण ठेगाना मात्र, वास्तविक पसल होइन।">123 Sample Street, Columbus, OH 43232 - Example address only, not a real shop.</p>
+<p data-en="Phone: (614) 555-0142 - Example only" data-ne="फोन: (६१४) ५५५-०१४२ - उदाहरण मात्र">Phone: (614) 555-0142 - Example only</p>
+<p data-en="Pay in store. No online payment on this sample site." data-ne="पसलमा भुक्तानी गर्नुहोस्। यो नमूना साइटमा अनलाइन भुक्तानी छैन।">Pay in store. No online payment on this sample site.</p>
+</div>
+</div>
 <script>
 document.getElementById("pickup-form").addEventListener("submit", function(event) {
 event.preventDefault();
@@ -56,8 +95,8 @@ var hours = {
 2: {open: 540, close: 1200},
 3: {open: 540, close: 1200},
 4: {open: 540, close: 1200},
-5: {open: 540, close: 1230},
-6: {open: 540, close: 1200}
+5: {open: 540, close: 1200},
+6: {open: 540, close: 1230}
 };
 function formatTime(minutes) {
 var h = Math.floor(minutes / 60);
@@ -93,6 +132,49 @@ document.querySelectorAll("[data-en]").forEach(function(el) {
 el.textContent = currentLang === "ne" ? el.getAttribute("data-ne") : el.getAttribute("data-en");
 });
 this.textContent = currentLang === "ne" ? "View in English" : "नेपालीमा हेर्नुहोस्";
+});
+</script>
+<script>
+var categoryItems = {
+spices: {en: ["Turmeric", "Cumin", "Coriander Powder", "Garam Masala", "Chili Powder"], ne: ["बेसार", "जिरा", "धनियाँ पाउडर", "गरम मसला", "खुर्सानी पाउडर"]},
+rice: {en: ["Basmati Rice", "Jasmine Rice", "Masoor Dal", "Toor Dal", "Chana"], ne: ["बासमती चामल", "जस्मिन चामल", "मसुरो दाल", "तूर दाल", "चना"]},
+vegetables: {en: ["Okra", "Cauliflower", "Green Beans", "Bitter Gourd", "Eggplant"], ne: ["भिन्डी", "काउली", "हरियो सिमी", "करेला", "भण्टा"]},
+frozen: {en: ["Frozen Paratha", "Frozen Samosa", "Frozen Vegetables", "Ice Cream"], ne: ["फ्रोजन पराठा", "फ्रोजन समोसा", "फ्रोजन तरकारी", "आइसक्रिम"]},
+snacks: {en: ["Wai Wai Noodles", "Chips", "Namkeen", "Biscuits"], ne: ["वाई वाई चाउचाउ", "चिप्स", "नमकिन", "बिस्कुट"]},
+hotfood: {en: ["Sel Roti - Weekend Only", "Samosa", "Momo", "Chiya"], ne: ["सेल रोटी - हप्ताको अन्त्यमा मात्र", "समोसा", "मोमो", "चिया"]},
+beverages: {en: ["Mango Lassi", "Mango Juice", "Coca-Cola", "Bottled Water"], ne: ["आँप लस्सी", "आँप जुस", "कोका-कोला", "बोतल पानी"]},
+dairy: {en: ["Paneer", "Yogurt", "Ghee", "Eggs"], ne: ["पनिर", "दही", "घिउ", "अण्डा"]},
+bakery: {en: ["Naan", "Roti", "Pita", "White Bread"], ne: ["नान", "रोटी", "पिटा", "सेतो रोटी"]},
+pickles: {en: ["Mango Pickle", "Chili Pickle", "Mint Chutney", "Tamarind Chutney"], ne: ["आँप अचार", "खुर्सानी अचार", "पुदिना चटनी", "इमली चटनी"]},
+pooja: {en: ["Incense", "Diya", "Flowers", "Camphor"], ne: ["धूप", "दिया", "फूल", "कपूर"]}
+};
+var selectedCategory = null;
+function showCategory(slug, liElement, scroll) {
+selectedCategory = slug;
+var detail = document.getElementById("category-detail");
+var title = document.getElementById("category-detail-title");
+var itemsList = document.getElementById("category-detail-items");
+title.textContent = liElement.getAttribute(currentLang === "ne" ? "data-ne" : "data-en");
+itemsList.innerHTML = "";
+categoryItems[slug][currentLang].forEach(function(item) {
+var li = document.createElement("li");
+li.textContent = item;
+itemsList.appendChild(li);
+});
+detail.style.display = "block";
+if (scroll) { detail.scrollIntoView({behavior: "smooth"}); }
+}
+document.querySelectorAll("li[data-category]").forEach(function(li) {
+li.addEventListener("click", function() { showCategory(li.getAttribute("data-category"), li, true); });
+li.addEventListener("keydown", function(event) {
+if (event.key === "Enter" || event.key === " ") { event.preventDefault(); showCategory(li.getAttribute("data-category"), li, true); }
+});
+});
+document.getElementById("lang-toggle").addEventListener("click", function() {
+if (selectedCategory) {
+var li = document.querySelector('li[data-category="' + selectedCategory + '"]');
+if (li) { showCategory(selectedCategory, li, false); }
+}
 });
 </script>
 </body>
