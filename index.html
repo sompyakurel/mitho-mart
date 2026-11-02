@@ -80,13 +80,35 @@
 </div>
 </div>
 <script>
+var pickupName = "";
+var pickupRef = "";
+function renderPickupConfirmation() {
+if (!pickupRef) { return; }
+var confirmation = document.getElementById("pickup-confirmation");
+if (currentLang === "ne") {
+confirmation.textContent = "धन्यवाद, " + pickupName + "! तपाईंको नमूना पिकअप अनुरोध " + pickupRef + " हो। पसलले यसलाई पुष्टि गर्नेछ, र तपाईंले पसलमा भुक्तानी गर्नुहुनेछ। कुनै वास्तविक अर्डर राखिएको छैन।";
+} else {
+confirmation.textContent = "Thanks, " + pickupName + "! Your sample pickup request is " + pickupRef + ". The shop would confirm it, and you would pay in store. No real order was placed.";
+}
+confirmation.style.display = "block";
+}
 document.getElementById("pickup-form").addEventListener("submit", function(event) {
 event.preventDefault();
-var name = document.getElementById("pickup-name").value;
-var ref = "MM-" + Math.floor(1000 + Math.random() * 9000);
-var confirmation = document.getElementById("pickup-confirmation");
-confirmation.textContent = "Thanks, " + name + "! Your sample pickup request is " + ref + ". The shop would confirm it, and you would pay in store. No real order was placed.";
-confirmation.style.display = "block";
+pickupName = document.getElementById("pickup-name").value;
+pickupRef = "MM-" + Math.floor(1000 + Math.random() * 9000);
+renderPickupConfirmation();
+});
+</script>
+<script>
+var currentLang = "en";
+document.getElementById("lang-toggle").addEventListener("click", function() {
+currentLang = currentLang === "en" ? "ne" : "en";
+document.querySelectorAll("[data-en]").forEach(function(el) {
+el.textContent = currentLang === "ne" ? el.getAttribute("data-ne") : el.getAttribute("data-en");
+});
+this.textContent = currentLang === "ne" ? "View in English" : "नेपालीमा हेर्नुहोस्";
+if (typeof updateBadge === "function") { updateBadge(); }
+renderPickupConfirmation();
 });
 </script>
 <script>
@@ -108,32 +130,37 @@ if (h12 === 0) { h12 = 12; }
 if (m === 0) { return h12 + " " + ampm; }
 return h12 + ":" + (m < 10 ? "0" + m : m) + " " + ampm;
 }
+function updateBadge() {
 var now = new Date();
 var day = now.getDay();
 var currentMinutes = now.getHours() * 60 + now.getMinutes();
 var today = hours[day];
 var badge = document.getElementById("open-badge");
 if (currentMinutes >= today.open && currentMinutes < today.close) {
-badge.textContent = "Open now - Closes " + formatTime(today.close) + " today";
 badge.className = "open";
+if (currentLang === "ne") {
+badge.textContent = "अहिले खुला छ - आज " + formatTime(today.close) + " मा बन्द हुन्छ";
+} else {
+badge.textContent = "Open now - Closes " + formatTime(today.close) + " today";
+}
 } else if (currentMinutes < today.open) {
-badge.textContent = "Closed - Opens " + formatTime(today.open) + " today";
 badge.className = "closed";
+if (currentLang === "ne") {
+badge.textContent = "बन्द छ - आज " + formatTime(today.open) + " मा खुल्छ";
+} else {
+badge.textContent = "Closed - Opens " + formatTime(today.open) + " today";
+}
 } else {
 var tomorrow = hours[(day + 1) % 7];
-badge.textContent = "Closed - Opens " + formatTime(tomorrow.open) + " tomorrow";
 badge.className = "closed";
+if (currentLang === "ne") {
+badge.textContent = "बन्द छ - भोलि " + formatTime(tomorrow.open) + " मा खुल्छ";
+} else {
+badge.textContent = "Closed - Opens " + formatTime(tomorrow.open) + " tomorrow";
 }
-</script>
-<script>
-var currentLang = "en";
-document.getElementById("lang-toggle").addEventListener("click", function() {
-currentLang = currentLang === "en" ? "ne" : "en";
-document.querySelectorAll("[data-en]").forEach(function(el) {
-el.textContent = currentLang === "ne" ? el.getAttribute("data-ne") : el.getAttribute("data-en");
-});
-this.textContent = currentLang === "ne" ? "View in English" : "नेपालीमा हेर्नुहोस्";
-});
+}
+}
+updateBadge();
 </script>
 <script>
 var categoryItems = {
