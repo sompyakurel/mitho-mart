@@ -11,10 +11,9 @@ This is a demo only. It is not a real shop. There are no real orders, no payment
 
 - GitHub Pages (HTTPS): https://sompyakurel.github.io/mitho-mart/
 - AWS S3 website (HTTP only): http://mitho-mart-portfolio-sompyakurel.s3-website.us-east-2.amazonaws.com
+- AWS CloudFront (HTTPS for S3): https://d30ngivsvlnxcj.cloudfront.net
 
 Note on the S3 URL: the endpoint uses a dot, `s3-website.us-east-2`, not a dash. The dash form gives a DNS NXDOMAIN error. Use the URL above exactly, or get it from Terraform output, do not reconstruct it from memory.
-
-CloudFront (HTTPS for S3) is in progress, not live yet: see "CloudFront status" below.
 
 ## Features
 
@@ -42,7 +41,7 @@ CloudFront (HTTPS for S3) is in progress, not live yet: see "CloudFront status" 
 
 - index.html - all the words and headings, categories, fresh items, pickup form, open badge, hours table, Visit Us, and language toggle, plus the JavaScript for those features
 - style.css - all the look: orange banner, hero photo, card grid, form card, open badge pill, hours table, info-row side-by-side layout, category hover, and detail card. No shop words in this file, except as needed for styling.
-- infra/main.tf - Terraform for AWS: S3 bucket, S3 website configuration (index and error document both index.html), public access block, public-read bucket policy (GetObject only, visitors can read, not write), S3 objects for index.html and style.css with etag file hashes so Terraform re-uploads only when a file changes, and outputs for the website endpoint and, once deployed, the CloudFront domain. The CloudFront distribution code is currently local only, not yet committed, because it has not yet deployed, see below.
+- infra/main.tf - Terraform for AWS: S3 bucket, S3 website configuration (index and error document both index.html), public access block, public-read bucket policy (GetObject only, visitors can read, not write), S3 objects for index.html and style.css with etag file hashes so Terraform re-uploads only when a file changes, and outputs for the website endpoint and the CloudFront domain. The CloudFront distribution is deployed, see CloudFront status below.
 - infra/.gitignore - ignores `.terraform/` and `*.tfstate`, so state and provider plugins stay local and are never committed. `.terraform.lock.hcl` is committed on purpose, so provider versions are locked.
 - .github/workflows/check.yml - CI check on every push to main. It checks that index.html exists and contains "Mitho Mart".
 - .github/workflows/deploy.yml - CD deploy on every push to main, and on manual trigger. It checks out the repo, configures AWS credentials from GitHub Secrets, and runs `aws s3 cp` for index.html (text/html; charset=utf-8) and style.css (text/css) to s3://mitho-mart-portfolio-sompyakurel.
@@ -91,19 +90,21 @@ From the infra folder, with AWS credentials for IAM user Som, not root:
 Outputs after apply:
 
 - website_endpoint - the S3 website domain, dot form, see Live demos above
-- cloudfront_domain - only after CloudFront deploys successfully, see CloudFront status below
+- cloudfront_domain - https://d30ngivsvlnxcj.cloudfront.net, see CloudFront status below
 
 Drift lesson learned on this project: Terraform and Actions must agree on content-type. Actions uploads index.html with text/html; charset=utf-8, so main.tf now uses that exact content-type for the index object. If main.tf said plain text/html, Terraform would try to revert S3 back to plain on every plan, and Actions would set it back to charset on every push, in a loop. Aligning them stops that loop.
 
 ## CloudFront status
 
-CloudFront for HTTPS in front of S3 is in progress, not live yet, as of 2026-11-02.
+CloudFront for HTTPS in front of S3 is LIVE as of 2026-11-04: https://d30ngivsvlnxcj.cloudfront.net (distribution EYR1EFDJSEO2N).
 
-What is planned: a CloudFront distribution with origin = the S3 website endpoint, http-only between CloudFront and S3, viewer protocol redirect-to-https, default root object index.html, default CloudFront certificate for *.cloudfront.net, price class PriceClass_100 (US, Canada, Europe only, cheapest), and a 1-hour default cache TTL, with a cache invalidation step to be added to the deploy workflow so pushes clear the CloudFront cache instead of waiting for expiry.
+What it is: a CloudFront distribution with origin = the S3 website endpoint, http-only between CloudFront and S3, viewer protocol redirect-to-https, default root object index.html, default CloudFront certificate for *.cloudfront.net, price class PriceClass_100 (US, Canada, Europe only, cheapest), and a 1-hour default cache TTL. The HTTPS address was tested in a browser after deployment and loads the full sample site.
 
-What blocked it: Terraform plan was clean (1 to add, 0 to change), but apply failed with AWS 403: "Your account must be verified before you can add new CloudFront resources." This is an account verification gate, not a code error and not an IAM permission error, because IAM user Som has AdministratorAccess with no permissions boundary. A support case was opened for account verification. Until Support lifts that gate, the CloudFront distribution is not deployed, there is no CloudFront domain to test yet, and the CloudFront code in main.tf is intentionally not committed, so the repo does not claim a distribution that does not exist. When Support verifies the account, the next steps are: retry Terraform apply with Som, copy the cloudfront_domain from apply output exactly and test it in a browser over HTTPS, add a CloudFront invalidation step to deploy.yml and a CreateInvalidation permission to the deploy user, test a push-only deploy through CloudFront, then update this README with the CloudFront domain.
+What blocked it, and how it cleared: Terraform plan was clean (1 to add, 0 to change), but apply failed on 2026-11-02 with AWS 403: "Your account must be verified before you can add new CloudFront resources." This was an account verification gate, not a code error and not an IAM permission error, because IAM user Som has AdministratorAccess with no permissions boundary. Support case 179366365900180 was opened and escalated, but no unblock email ever arrived. On 2026-11-04 a plain retry of the same apply succeeded in 2m49s, proving the verification had cleared silently. Lesson: when a gate like this has no email, a retry is cheap and worth trying before assuming it is still blocked.
 
-In the meantime, HTTPS is already available via GitHub Pages, and S3 remains HTTP only, which is normal for S3 website hosting without CloudFront.
+Still to do on CloudFront: add a cache invalidation step to deploy.yml, plus a CreateInvalidation permission for the deploy user, and test a push-only deploy through CloudFront. Until that lands, the CloudFront URL can show an old site for up to the cache TTL after a push, while GitHub Pages and the S3 endpoint show the new site right away.
+
+S3 itself remains HTTP only, which is normal for S3 website hosting without CloudFront. HTTPS for S3 now comes from CloudFront, and HTTPS is also available via GitHub Pages.
 
 ## Security notes
 
@@ -116,11 +117,13 @@ In the meantime, HTTPS is already available via GitHub Pages, and S3 remains HTT
 
 - Shop hours and fresh items are hard-coded samples, a real shop would update them from a file or a sheet.
 - The hero photo is an external Unsplash image, not a local file in the repo, so if that Unsplash URL breaks, the photo will break, while the rest of the site still works.
-- S3 website hosting is HTTP only until CloudFront is verified and deployed, see CloudFront status above.
-- CloudFront caching, once live, will mean the CloudFront URL can show an old site for up to the cache TTL unless invalidated, which is why invalidation will be added to the deploy workflow.
+- S3 website hosting on its own is HTTP only; HTTPS for S3 now comes from CloudFront, see CloudFront status above.
+- CloudFront caching means the CloudFront URL can show an old site for up to the cache TTL unless invalidated, which is why invalidation will be added to the deploy workflow.
 
 ## What's next
 
-- CloudFront, after AWS Support verifies the account: apply the distribution, test HTTPS, add cache invalidation to Actions, then update this README with the CloudFront domain
-- Optional hardening after CloudFront works: Origin Access Control, so the bucket can go private and only CloudFront can read it, instead of public-read
-- Job sprint: update resume and LinkedIn with this repo, Pages link, and S3 link, and apply to junior / associate DevOps and cloud roles, Columbus or US-remote
+- CloudFront cache invalidation: add the invalidation step to deploy.yml, plus the deploy user's CreateInvalidation permission, then prove a push-only deploy shows up on the CloudFront URL right away
+- Optional hardening: Origin Access Control, so the bucket can go private and only CloudFront can read it, instead of public-read
+- Festival mode: a date-driven banner and specials section that switches itself on for Dashain, Tihar, and Holi, with no code change each year, just dates and items in one place
+- Owner-editable data: move categories and Fresh This Week out of the HTML into a single items file, so updating the week's fresh list is one file edit, not a hunt through the page
+- Search and dietary filters: a search box plus vegetarian, vegan, and gluten-free filters across all categories, still fully bilingual, so a shopper can find what they can actually eat without opening every card
