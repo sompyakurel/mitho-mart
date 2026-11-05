@@ -102,14 +102,14 @@ What it is: a CloudFront distribution with origin = the S3 website endpoint, htt
 
 What blocked it, and how it cleared: Terraform plan was clean (1 to add, 0 to change), but apply failed on 2026-11-02 with AWS 403: "Your account must be verified before you can add new CloudFront resources." This was an account verification gate, not a code error and not an IAM permission error, because IAM user Som has AdministratorAccess with no permissions boundary. Support case 179366365900180 was opened and escalated, but no unblock email ever arrived. On 2026-11-04 a plain retry of the same apply succeeded in 2m49s, proving the verification had cleared silently. Lesson: when a gate like this has no email, a retry is cheap and worth trying before assuming it is still blocked.
 
-Still to do on CloudFront: add a cache invalidation step to deploy.yml, plus a CreateInvalidation permission for the deploy user, and test a push-only deploy through CloudFront. Until that lands, the CloudFront URL can show an old site for up to the cache TTL after a push, while GitHub Pages and the S3 endpoint show the new site right away.
+CloudFront cache invalidation is also done: deploy.yml now runs `aws cloudfront create-invalidation --distribution-id EYR1EFDJSEO2N --paths "/*"` after the S3 uploads on every push to main, and the deploy user has a narrow CloudFrontInvalidation policy allowing CreateInvalidation on this distribution only. It was proven on the commit that added it (2d24e2a, 2026-11-04): the deploy run created an invalidation that completed, so the CloudFront URL clears its cache on every deploy instead of lagging up to the cache TTL.
 
 S3 itself remains HTTP only, which is normal for S3 website hosting without CloudFront. HTTPS for S3 now comes from CloudFront, and HTTPS is also available via GitHub Pages.
 
 ## Security notes
 
 - Day-to-day AWS work uses IAM user Som, not root. Root was used for Terraform early on, then switched to Som, and Terraform plan with Som showed no changes, proving Som has the permissions needed. Root is not used day-to-day.
-- GitHub Actions uses a separate, least-privilege deploy user, mitho-mart-deploy, with only s3:PutObject on this one bucket. Its key is stored as GitHub Secrets AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY, never in code, never in chat, never in a repo file.
+- GitHub Actions uses a separate, least-privilege deploy user, mitho-mart-deploy, with only s3:PutObject on this one bucket, plus a narrow inline policy allowing cloudfront:CreateInvalidation on this one distribution only. Its key is stored as GitHub Secrets AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY, never in code, never in chat, never in a repo file.
 - If a key ever appears in chat or in a repo, delete it and rotate it immediately, do not just deactivate it and leave it. This happened once on this project with a Som key, it was deleted and replaced, and the new key was verified with aws sts get-caller-identity and terraform plan before continuing.
 - The bucket policy allows public read (GetObject) only. Visitors can read files, they cannot put, delete, or list the bucket. The sample site contains no real customer data, no real orders, and no real payment information.
 
@@ -118,11 +118,10 @@ S3 itself remains HTTP only, which is normal for S3 website hosting without Clou
 - Shop hours and fresh items are hard-coded samples, a real shop would update them from a file or a sheet.
 - The hero photo is an external Unsplash image, not a local file in the repo, so if that Unsplash URL breaks, the photo will break, while the rest of the site still works.
 - S3 website hosting on its own is HTTP only; HTTPS for S3 now comes from CloudFront, see CloudFront status above.
-- CloudFront caching means the CloudFront URL can show an old site for up to the cache TTL unless invalidated, which is why invalidation will be added to the deploy workflow.
+- CloudFront caching used to mean the CloudFront URL could show an old site for up to the cache TTL; the deploy workflow now invalidates the cache on every push, so that lag is gone apart from the few minutes an invalidation takes to complete.
 
 ## What's next
 
-- CloudFront cache invalidation: add the invalidation step to deploy.yml, plus the deploy user's CreateInvalidation permission, then prove a push-only deploy shows up on the CloudFront URL right away
 - Optional hardening: Origin Access Control, so the bucket can go private and only CloudFront can read it, instead of public-read
 - Festival mode: a date-driven banner and specials section that switches itself on for Dashain, Tihar, and Holi, with no code change each year, just dates and items in one place
 - Owner-editable data: move categories and Fresh This Week out of the HTML into a single items file, so updating the week's fresh list is one file edit, not a hunt through the page
