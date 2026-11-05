@@ -17,3 +17,5 @@ jobs:
         run: aws s3 cp index.html s3://mitho-mart-portfolio-sompyakurel/index.html --content-type "text/html; charset=utf-8"
       - name: Deploy style.css to S3
         run: aws s3 cp style.css s3://mitho-mart-portfolio-sompyakurel/style.css --content-type "text/css"
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id EYR1EFDJSEO2N --paths "/*"
